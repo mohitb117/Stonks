@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_search"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/title_search_home" />
+
+    <item
+        android:id="@+id/navigation_favourites"
+        android:icon="@drawable/ic_baseline_star_24"
+        android:title="@string/title_favourites" />
+
+</menu>

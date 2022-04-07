@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_search">
+
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="com.mohitb117.demo_omdb_api.ui.search.SearchFragment"
+        android:label="@string/title_search_home"
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
+        android:id="@+id/navigation_favourites"
+        android:name="com.mohitb117.demo_omdb_api.ui.favourites.FavouritesFragment"
+        android:label="@string/title_favourites"
+        tools:layout="@layout/fragment_favourites" />
+
+    <dialog
+        android:id="@+id/navigation_details"
+        android:name="com.mohitb117.demo_omdb_api.ui.details.BottomSheetDetailsFragment"
+        android:label="details_bottom_sheet"
+        tools:layout="@layout/fragment_details" >
+    </dialog>
+
+</navigation>
