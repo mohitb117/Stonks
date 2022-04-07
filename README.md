@@ -73,3 +73,8 @@ SubTasks:
 
 	● Do NOT use a web view.
      ✅ DONE
+
+URLs:
+* https://storage.googleapis.com/cash-homework/cash-stocks-api/portfolio.json
+* https://storage.googleapis.com/cash-homework/cash-stocks-api/portfolio_malformed.json
+* https://storage.googleapis.com/cash-homework/cash-stocks-api/portfolio_empty.json
