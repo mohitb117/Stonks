@@ -9,7 +9,7 @@ Video Attached:
    ⛔️ NOT COVERED (out of time)
 
 2. Network Available Conditions   
-    a. Loading Search Results from OMDB API
+    a. Loading Search Results from STONKS API
         ✅ COVERED
     b. Show Cached Search Results which were marked favourite by the user
         ✅ COVERED

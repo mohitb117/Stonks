@@ -4,4 +4,12 @@
     <string name="title_search_home">Search</string>
     <string name="title_favourites">Favourites</string>
     <string name="hello">Hello!!</string>
+
+    <plurals name="empty_portfolio_result">
+        <item quantity="zero">@string/empty_portfolio_result_for_no_reason</item>
+        <item quantity="other">@string/empty_portfolio_result_for_reason</item>
+    </plurals>
+
+    <string name="empty_portfolio_result_for_reason">No Stocks Found!! for reason %s</string>
+    <string name="empty_portfolio_result_for_no_reason">No Stocks Found!!</string>
 </resources>

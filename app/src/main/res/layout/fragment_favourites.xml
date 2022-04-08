@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/results_recycler_view"
-        tools:listitem="@layout/item_movie_list_preview" />
+        tools:listitem="@layout/item_stonk" />
 
     <TextView
         android:id="@+id/empty_view"
@@ -44,7 +44,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/results_summary"
-        tools:listitem="@layout/item_movie_list_preview"
+        tools:listitem="@layout/item_stonk"
         tools:itemCount="4"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
