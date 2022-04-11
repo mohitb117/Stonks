@@ -8,17 +8,32 @@ HOW TO BUILD APK for Demo App
 
 1. Use Android Studio:
    I used Android Studio Config: 
-   
-   Android Studio Arctic Fox | 2020.3.1 Beta 3
-   Build #AI-203.7717.56.2031.7395685, built on May 24, 2021
-   Runtime version: 11.0.10+0-b96-7281165 x86_64
-   VM: OpenJDK 64-Bit Server VM by JetBrains s.r.o.
-   macOS 11.4
-   GC: G1 Young Generation, G1 Old Generation
-   Memory: 2048M
-   Cores: 12
-   Registry: ide.intellij.laf.enable.animation=true, external.system.auto.import.disabled=true, ide.balloon.shadow.size=0
-   Non-Bundled Plugins: PlantUML integration, String Manipulation, com.mallowigi.idea, net.vektah.codeglance, zielu.gittoolbox, com.developerphil.adbidea, com.jetbrains.kmm, org.intellij.plugins.markdown, wu.seal.tool.jsontokotlin
+
+    Android Studio Dolphin | 2021.3.1 Canary 7
+    Build #AI-213.6777.52.2113.8305692, built on March 15, 2022
+    Runtime version: 11.0.13+0-b1751.21-8125866 aarch64
+    VM: OpenJDK 64-Bit Server VM by JetBrains s.r.o.
+    macOS 12.3
+    GC: G1 Young Generation, G1 Old Generation
+    Memory: 4096M
+    Cores: 10
+    Registry:
+    ide.intellij.laf.enable.animation=true
+    external.system.auto.import.disabled=true
+    ide.text.editor.with.preview.show.floating.toolbar=false
+    ide.balloon.shadow.size=0
+    
+    Non-Bundled Plugins:
+    wu.seal.tool.jsontokotlin (3.7.2)
+    net.vektah.codeglance (1.5.4)
+    idea.plugin.protoeditor (213.6461.28)
+    dev.polek.adbwifi (1.2.4)
+    com.mallowigi.idea (16.0)
+    String Manipulation (9.4.0)
+    Dilbert (1.9.0.168)
+    zielu.gittoolbox (212.8.8)
+    com.developerphil.adbidea (1.6.4)
+    com.suusan2go.kotlin-fill-class (1.0.11)
 
 2. Use Gradle: 
   a. Download and extract the project folder.
@@ -42,37 +57,74 @@ HOW TO BUILD APK for Demo App
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Task: 
-1. Create an Android native application that allows users to search for movies using the Open Movie Database search API. 
-The requirements of the app are as follows:
+# Cash App Stocks Take Home Project
+Build a stocks app that shows a list of stock symbols and prices for a set of stocks parsed from the provided JSON endpoints.
+Requirements
+Your app should...
+Handle loading, error, and empty states
+Display the returned information in a list (feel free to add whatever UI touches you'd like)
+Have unit tests that protect against regressions (don't worry about snapshot or UI tests)
+This project should take you around 23 hours, at the end of this time, please take about 15 minutes to write up your experience in a README file to give us a window into your thought process. This README should tell us...
+Cash App Stocks Take Home Project 1
+📊
 
-SubTasks: 
- Two views
+ The architectural approach you took and why
+The trade offs you made and why
+How to run your project
+3rd party libraries or copied code you may have used Any other information that you would like us to know
+ This project will be used throughout your Cash interview experience, so please ensure that you feel comfortable modifying, maintaining, and extending this code.
+Details
+Portfolio Endpoints
+We have provided an endpoint which will return your current portfolio. When called this will return a JSON object containing a list of stocks with some relevant information.
+ https://storage.googleapis.com/cash-homework/cash-stocks- api/portfolio.json
+  You can also simulate a malformed response using the following provided endpoint (it’s okay to discard the entire response if it is malformed):
+ https://storage.googleapis.com/cash-homework/cash-stocks- api/portfolio_ malformed.json
+  Cash App Stocks Take Home Project 2
+🔗
+🔗
+💡
 
-○ First tab provides a movie search results list view.
-	■ Each search result must show the movie name, director, year, brief plot summary, and poster.: 
-     ✅ DONE
+Finally, you can simulate an empty response using the final endpoint.
+ https://storage.googleapis.com/cash-homework/cash-stocks- api/portfolio_empty.json
+  Response Structure
+    Field Data type Nullable? Description
+     stocks Array false The list of stocks that are currently in your portfolio.
+   Stock Structure
+    Field
+Data type
+Nullable?
+Cash App Stocks Take Home Project 3
+Notes
+ ticker String false This is the ticker symbol for a given stock.
+  name String false
+The name of the company the ticker belongs to.
+   currency String false The denominating currency for this stock.
+    current_price_cents Integer false
+The currently trading price for this specific stock in USD cents.
+   quantity Integer true
+The amount of this stock that is currently in the portfolio.
+    current_price_timestamp Integer false
+A Unix timestamp represented in UTC from when the current price was last calculated.
+   Example JSON
+ {
+"stocks": [
+{
+"ticker": "UA",
+"name": "Under Armour, Inc.", "currency": "USD", "current_price_cents": 844, "quantity": null,
+ 🔗
 
-	■ When a user selects a search result, show a detail view. Be creative with the display.
-     ✅ DONE
-
-	■ Users can select favorite movies from the search results: **DONE**
-     ✅ DONE
-
-
-	■ Favorite status is shown in the search results if a movie has been added to favorites.
-     ✅ DONE
-
-
-	■ The user is notified when unable to perform a search.
-     ✅ DONE
-
-○ Second view shows all favorite movies and persist favorites across app launches.
-	● Be localized to English.
-     ✅ DONE
-
-	● Do NOT use a web view.
-     ✅ DONE
+Cash App Stocks Take Home Project 4
+ "current_price_timestamp": 1597942385 },
+...
+] }
+Other Stuff
+Use What You Know
+We’re looking to see you at your best – as such, please use the language and frameworks you’re most comfortable with on your chosen mobile platform. This means that if you’re most proficient with Objective-C or Java, use that – don’t feel pressured to use Swift or Kotlin! Cash App ships all four in production, so we’re not going to prefer answers in one language over another.
+Show Us Your Strengths
+We want to see what you’re best at. Feel free to use 3rd party libraries, but please understand that we want this exercise to be a good representation of your
+coding ability.
+  
+	
 
 URLs:
 * https://storage.googleapis.com/cash-homework/cash-stocks-api/portfolio.json

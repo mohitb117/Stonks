@@ -8,14 +8,8 @@
     <fragment
         android:id="@+id/navigation_view"
         android:name="com.mohitb117.stonks.ui.stocks.StockViewFragment"
-        android:label="@string/title_search_home"
+        android:label="Home"
         tools:layout="@layout/fragment_stock_view" />
-
-    <fragment
-        android:id="@+id/navigation_favourites"
-        android:name="com.mohitb117.stonks.ui.favourites.FavouritesFragment"
-        android:label="@string/title_favourites"
-        tools:layout="@layout/fragment_favourites" />
 
     <dialog
         android:id="@+id/navigation_details"

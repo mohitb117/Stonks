@@ -3,7 +3,7 @@ package com.mohitb117.stonks
 import com.mohitb117.stonks.dao.CachedPortfolioDao
 import com.mohitb117.stonks.datamodels.Portfolio
 import com.mohitb117.stonks.datamodels.Stock
-import com.mohitb117.stonks.endpoints.Api
+import com.mohitb117.stonks.endpoints.ListApi
 import com.mohitb117.stonks.repositories.StonksRepository
 import com.slack.eithernet.ApiResult
 import kotlinx.coroutines.runBlocking
@@ -32,7 +32,7 @@ inline fun <T> whenever(methodCall: T): OngoingStubbing<T> {
 class StonksRepositoryTest {
 
     @Mock
-    private lateinit var mockApi: Api
+    private lateinit var mockListApi: ListApi
 
     @Mock
     private lateinit var dao: CachedPortfolioDao
@@ -41,9 +41,9 @@ class StonksRepositoryTest {
     fun dummyApiWithSuccess() = runBlocking {
         // Arrange
         val successfulResult = ApiResult.success(Portfolio(emptyList()))
-        whenever(mockApi.loadPortfolioGood()).thenReturn(successfulResult)
+        whenever(mockListApi.loadPortfolioGood()).thenReturn(successfulResult)
 
-        val repository = StonksRepository(mockApi, dao)
+        val repository = StonksRepository(mockListApi, dao)
 
         // Act.
         val result = repository.loadPortfolio()
@@ -58,9 +58,9 @@ class StonksRepositoryTest {
         // Arrange
         val error = "error"
         val errorResponse = ApiResult.httpFailure(404, error)
-        whenever(mockApi.loadPortfolioGood()).thenReturn(errorResponse)
+        whenever(mockListApi.loadPortfolioGood()).thenReturn(errorResponse)
 
-        val repository = StonksRepository(mockApi, dao)
+        val repository = StonksRepository(mockListApi, dao)
 
         // Act.
         val result = repository.loadPortfolio()
@@ -86,7 +86,7 @@ class StonksRepositoryTest {
 
         whenever(dao.getForTicker("QQQ")).thenReturn(listOf(stock))
 
-        val repository = StonksRepository(mockApi, dao)
+        val repository = StonksRepository(mockListApi, dao)
 
         // Act.
         val result = repository.contains("QQQ")
@@ -100,7 +100,7 @@ class StonksRepositoryTest {
         // Arrange
         whenever(dao.getForTicker("AAAA")).thenReturn(emptyList())
 
-        val repository = StonksRepository(mockApi, dao)
+        val repository = StonksRepository(mockListApi, dao)
 
         // Act.
         val result = repository.contains("AAAA")

@@ -72,12 +72,7 @@ data class Stock(
 
     override fun toString(): String {
         return """
-            ticker=$ticker,
-             name=$name,
-             value=$currentPortfolioValue, 
-             currency=$currency, 
-             quantity=$quantity,
-             ratio=$ratio
+             $ticker($name) @ $currentPortfolioValue $currency 
         """.trimIndent()
     }
 }
@@ -85,13 +80,13 @@ data class Stock(
 const val TABLE_NAME = "stock_table_name"
 
 @Parcelize
-data class Details(
+data class StockDetails(
     val afterHours: Double,
     val close: Double,
     val from: String,
     val high: Double,
     val low: Double,
-    val open: Int,
+    val open: Double,
     val preMarket: Double,
     val status: String,
     val symbol: String,

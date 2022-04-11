@@ -3,93 +3,112 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/bottomsheet_rounded"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
+    android:layout_gravity="bottom"
+    android:background="@drawable/bottomsheet_rounded"
     tools:context=".ui.details.BottomSheetDetailsFragment">
 
     <!--
-    * movie name, director, year, brief plot summary, and poster
+        {
+            "status": "OK",
+            "from": "2022-03-11",
+            "symbol": "AAPL",
+            "open": 158.93,
+            "high": 159.28,
+            "low": 154.5,
+            "close": 154.73,
+            "volume": 96917302,
+            "afterHours": 154.44,
+            "preMarket": 158.4
+        }
     -->
 
-    <ImageView
-        android:id="@+id/poster"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/stock_data_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/from"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="symbol_name" />
+
+        <TextView
+            android:id="@+id/from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/name"
+            app:layout_constraintTop_toTopOf="@id/name"
+            tools:text="2022-03-11" />
+
+        <TextView
+            android:id="@+id/volume"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/name"
+            tools:text="volume: 96917302" />
+
+        <TextView
+            android:id="@+id/stock_spec_summary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/volume"
+            tools:text="open: 158.93,\nhigh: 159.28,\nlow: 154.5,\nclose: 154.73,\nafterHours: 154.44,\npreMarket: 158.4" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:visibility="visible"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_margin="16dp"
-        android:padding="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/favourite_toggle"
-        app:layout_constraintWidth_percent="0.5"
-        app:layout_constraintHeight_percent="0.5"
-        tools:ignore="ContentDescription" />
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        tools:text="@string/empty_portfolio_result_for_reason"
         android:textAlignment="center"
-        android:layout_margin="8dp"
-        android:padding="8dp"
-        tools:text="movie name"
         android:textAllCaps="true"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@id/year"
-        app:layout_constraintStart_toStartOf="@id/poster"
-        app:layout_constraintTop_toBottomOf="@id/poster"/>
-
-    <TextView
-        android:id="@+id/year"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:padding="8dp"
-        tools:text="(movie year)"
-        android:textAllCaps="true"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/name"
-        app:layout_constraintEnd_toEndOf="@id/poster"
-        app:layout_constraintTop_toTopOf="@id/name"/>
-
-    <TextView
-        android:id="@+id/director"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:layout_margin="8dp"
-        android:padding="8dp"
-        tools:text="movie director"
-        android:textAllCaps="true"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/name"/>
-
-    <TextView
-        android:id="@+id/plot_summary"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:layout_margin="8dp"
-        android:padding="8dp"
-        tools:text="movie plotmovie plotmovie plotmovie plotmovie plotmovie plotmovie plotmovie plotmovie plotmovie plotmovie plotmovie plotmovie plotmovie plotmovie plot"
-        android:textAllCaps="true"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/director"/>
-
-    <ToggleButton
-        android:id="@+id/favourite_toggle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:drawableStart="@drawable/ic_baseline_star_selector"
-        android:drawablePadding="4dp"
+        android:visibility="gone"
+        tools:visibility="visible"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Star this Movie"
-        tools:checked="true" />
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

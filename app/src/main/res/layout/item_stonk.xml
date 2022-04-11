@@ -6,6 +6,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/bottomsheet_rounded"
+    android:padding="4dp"
+    android:layout_margin="4dp"
     tools:layout_gravity="center">
 
     <TextView

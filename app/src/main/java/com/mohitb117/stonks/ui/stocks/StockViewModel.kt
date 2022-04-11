@@ -21,7 +21,7 @@ class StonksViewModel
 
     private var job: Job? = null
 
-    private val _portfolio = MutableLiveData<ResultWrapper<Portfolio>>(ResultWrapper.Loading())
+    private val _portfolio = MutableLiveData<ResultWrapper<Portfolio>>(null)
     val portfolio: LiveData<ResultWrapper<Portfolio>> = _portfolio
 
     fun getCachedPortfolio() =
@@ -48,13 +48,9 @@ class StonksViewModel
 
                 is ApiResult.Failure -> when (result) {
                     is ApiResult.Failure.ApiFailure -> ResultWrapper.Error(result.error)
-
                     is ApiResult.Failure.HttpFailure -> ResultWrapper.Error(result.error)
-
                     is ApiResult.Failure.NetworkFailure -> ResultWrapper.Error(result.error)
-
                     is ApiResult.Failure.UnknownFailure -> ResultWrapper.Error(result.error)
-
                     else -> ResultWrapper.Error("Not sure what is going on!!! 🙈🥺 ")
                 }
             }

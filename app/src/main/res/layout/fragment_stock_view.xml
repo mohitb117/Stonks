@@ -74,7 +74,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        tools:text="@string/empty_portfolio_result_for_no_reason"
+        tools:text="@string/empty_portfolio_result_for_reason"
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textStyle="bold"

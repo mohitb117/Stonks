@@ -26,6 +26,8 @@ import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.google.android.material.snackbar.Snackbar
+import com.mohitb117.stonks.R
+import com.mohitb117.stonks.activities.LaunchingActivity
 import com.mohitb117.stonks.common.ResultWrapper
 import com.mohitb117.stonks.databinding.FragmentStockViewBinding
 import com.mohitb117.stonks.datamodels.Portfolio
@@ -90,11 +92,10 @@ class StockViewFragment : Fragment(), Callbacks, SwipeRefreshLayout.OnRefreshLis
                 YAxis.AxisDependency.RIGHT,
                 TimeUnit.MILLISECONDS.toMillis(700)
             )
-
-            val highlight = Highlight(focussedItem.x, focussedItem.y, 0)
-
-            valueSelectedListener.onValueSelected(focussedItem, highlight)
         }
+
+        // FIXME: UGLY and use uni-directional events to communicate between fragment and parent activity.
+        (requireActivity() as LaunchingActivity).gotoDetails(stock)
     }
 
     override fun onAttach(context: Context) {
@@ -246,7 +247,8 @@ class StockViewFragment : Fragment(), Callbacks, SwipeRefreshLayout.OnRefreshLis
             is ResultWrapper.Error -> {
                 viewBinding.apply {
                     portfolioData.isVisible = false
-                    emptyView.isVisible = true
+                    this.emptyView.isVisible = true
+                    this.emptyView.text = resources.getString(R.string.empty_portfolio_result_for_reason, portfolioResult.error.toString())
                     loading.isVisible = false
                     swipeRefreshLayout.isRefreshing = false
                 }

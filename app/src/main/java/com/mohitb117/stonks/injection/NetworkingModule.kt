@@ -1,6 +1,7 @@
 package com.mohitb117.stonks.injection
 
-import com.mohitb117.stonks.endpoints.Api
+import com.mohitb117.stonks.endpoints.DetailsApi
+import com.mohitb117.stonks.endpoints.ListApi
 import com.slack.eithernet.ApiResultCallAdapterFactory
 import com.slack.eithernet.ApiResultConverterFactory
 import dagger.Module
@@ -23,32 +24,44 @@ import retrofit2.create
 )
 class NetworkingModule {
 
+    private fun createRetrofitBuilder(
+        okHttpClient: OkHttpClient,
+        baseUrl: String
+    ): Retrofit.Builder {
+        return Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .client(okHttpClient)
+            .addConverterFactory(ApiResultConverterFactory)
+            .addCallAdapterFactory(ApiResultCallAdapterFactory)
+            .addConverterFactory(MoshiConverterFactory.create().asLenient())
+    }
+
     @Provides
-    fun provideRetrofitApi(): Retrofit {
+    fun provideRetrofitApi(): OkHttpClient {
         val logging = HttpLoggingInterceptor().apply {
             setLevel(HttpLoggingInterceptor.Level.BODY)
         }
 
-        val client: OkHttpClient = OkHttpClient.Builder()
+        return OkHttpClient.Builder()
             .addInterceptor(logging)
-            .build()
-
-        return Retrofit.Builder()
-            .baseUrl(STONKS_BASE_URL)
-            .client(client)
-            .addConverterFactory(ApiResultConverterFactory)
-            .addCallAdapterFactory(ApiResultCallAdapterFactory)
-            .addConverterFactory(MoshiConverterFactory.create().asLenient())
             .build()
     }
 
     @Provides
-    fun provideSTONKSApiEndpoints(retrofit: Retrofit): Api =
-        retrofit.create()
+    fun provideSTONKSApiEndpoints(okHttpClient: OkHttpClient): ListApi =
+        createRetrofitBuilder(okHttpClient, STONKS_BASE_URL)
+            .build()
+            .create()
+
+    @Provides
+    fun provideDetailsApiEndpoints(okHttpClient: OkHttpClient): DetailsApi =
+        createRetrofitBuilder(okHttpClient, DETAILS_BASE_URL)
+            .build()
+            .create()
 
     companion object {
         const val STONKS_BASE_URL = "https://storage.googleapis.com/cash-homework/cash-stocks-api/"
 
-        const val DETAILS_BASE_URL = "https://api.polygon.io/v1/open-close/{ticker}/2020-10-14?adjusted=true&apiKey={api_key}"
+        const val DETAILS_BASE_URL = "https://api.polygon.io/v1/open-close/{ticker}/2020-10-14/"
     }
 }
