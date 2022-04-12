@@ -41,7 +41,7 @@ class StonksViewModel
                 is ApiResult.Success -> {
                     val portfolio = Portfolio(result.value.stocks)
 
-                    repository.insertAll(portfolio.stocks)
+                    repository.insertAll(portfolio)
 
                     ResultWrapper.Success(portfolio)
                 }

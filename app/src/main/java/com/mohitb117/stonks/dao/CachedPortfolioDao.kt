@@ -39,4 +39,11 @@ interface CachedPortfolioDao {
         """
     )
     suspend fun delete(ticker: String)
+
+    @Query(
+        """
+        DELETE FROM $TABLE_NAME 
+        """
+    )
+    suspend fun deleteAll()
 }

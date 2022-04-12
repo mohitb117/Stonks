@@ -7,6 +7,7 @@ import com.mohitb117.stonks.datamodels.Portfolio
 import com.mohitb117.stonks.datamodels.Stock
 import com.mohitb117.stonks.endpoints.ListApi
 import com.mohitb117.stonks.endpoints.DetailsApi
+import com.slack.eithernet.ApiResult
 import javax.inject.Inject
 
 class StonksRepository
@@ -22,11 +23,14 @@ class StonksRepository
         return cachedPortfolioDao.getForTicker(ticker).isNotEmpty()
     }
 
-    suspend fun insertAll(stocks: List<Stock>) {
-        cachedPortfolioDao.insertAll(stocks)
+    suspend fun insertAll(portfolio: Portfolio) {
+        cachedPortfolioDao.insertAll(portfolio.stocks)
     }
 
-    suspend fun loadPortfolio() = listApi.loadPortfolioGood()
+    suspend fun loadPortfolio(): ApiResult<Portfolio, String> {
+        cachedPortfolioDao.deleteAll()
+        return listApi.loadPortfolioGood()
+    }
 
     suspend fun loadStockDetails(ticker: String) =
         detailsApi.loadDetails(ticker = ticker, apiKey = DETAILS_API_KEY, adjusted = "true")
