@@ -14,12 +14,10 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class StockListAdapter(
-    /**
-     * FIXME: This is not an ideal implementation and prefer use ViewBinding Events
-     *  but strapped for time.
-     */
     private var callbacks: Callbacks? = null
-) : ListAdapter<Stock, StockListAdapter.StockViewHolder>(DiffCallback<Stock>()) {
+) : ListAdapter<Stock, StockListAdapter.StockViewHolder>(
+    DiffCallback<Stock>()
+) {
 
     private val listener: (stock: Stock) -> Unit = { callbacks?.onStockSelected(it) }
 
@@ -39,7 +37,45 @@ class StockListAdapter(
     }
 
     override fun submitList(list: List<Stock>?) {
-        super.submitList(list?.sortedByDescending { it.ratio })
+        super.submitList(interleaveStocks(list))
+    }
+
+    /**
+     * Interleaves even index for [GridLayoutManager] to show all non-null stocks at the top.
+     */
+    private fun interleaveStocks(list: List<Stock>?): List<Stock> {
+        if (list.isNullOrEmpty()) return emptyList()
+
+        val sortedDescending = list.sortedByDescending { it.ratio }
+        val emptyStockPortfolio = list.filter { it.ratio == 0F }
+        val nonEmptyStockPortfolio = sortedDescending.minus(emptyStockPortfolio.toSet())
+
+        val leftoverStocks = list.toMutableSet()
+        val result = Array<Stock?>(leftoverStocks.size) { null }
+
+        val handleIndexAndStock : (Int, Stock) -> Unit = { computedIndex, stock ->
+            if (computedIndex <= result.lastIndex) {
+                result[computedIndex] = stock
+                leftoverStocks.remove(stock)
+            }
+        }
+
+        nonEmptyStockPortfolio.forEachIndexed { index, stock ->
+            val computedIndex = 2 * index
+            handleIndexAndStock(computedIndex, stock)
+        }
+
+        emptyStockPortfolio.forEachIndexed { index, stock ->
+            val computedIndex = 2 * index + 1
+            handleIndexAndStock(computedIndex, stock)
+        }
+
+        leftoverStocks.forEach { stock ->
+            val firstNullIndex = result.indexOfFirst { it == null }
+            result[firstNullIndex] = stock
+        }
+
+        return result.filterNotNull()
     }
 
     inner class StockViewHolder(
