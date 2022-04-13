@@ -283,6 +283,7 @@ class StockViewFragment : Fragment(), Callbacks, SwipeRefreshLayout.OnRefreshLis
     }
 
     override fun onRefresh() {
+        dismissSnackbar()
         val default = activityViewModel.portfolioEndpoint.value ?: PortfolioEndpoint.Good
         onRefreshInternal(default)
     }
