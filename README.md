@@ -144,6 +144,8 @@ UseCases Covered by Mohit:
 
 Demo Video: https://github.com/mohitb117/Stonks/blob/main/app/artifacts_from_mohit/End-To-End-Stongs.mp4
 
-<img height="500" src="app/artifacts_from_mohit/Rough_sketch.jpg" width="500"/>
+| Design/Rough Sketch | Demo |
+| ---- |---- |
+| <img height="500" src="app/artifacts_from_mohit/Rough_sketch.jpg" width="500"/> | ![](https://github.com/mohitb117/Stonks/blob/main/app/artifacts_from_mohit/End-To-End-Stongs.gif) |
 
-![](https://github.com/mohitb117/Stonks/blob/main/app/artifacts_from_mohit/End-To-End-Stongs.gif)
+
