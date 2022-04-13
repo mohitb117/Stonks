@@ -1,5 +1,6 @@
 package com.mohitb117.stonks
 
+import com.mohitb117.stonks.common.ResultWrapper
 import com.mohitb117.stonks.dao.CachedPortfolioDao
 import com.mohitb117.stonks.datamodels.Portfolio
 import com.mohitb117.stonks.datamodels.Stock
@@ -9,11 +10,13 @@ import com.mohitb117.stonks.repositories.PortfolioEndpoint
 import com.mohitb117.stonks.repositories.StonksRepository
 import com.mohitb117.stonks.ui.stocks.StonksViewModel
 import com.slack.eithernet.ApiResult
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
 import org.junit.Assert.*
 import org.junit.Before
+import org.junit.Rule
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
@@ -25,6 +28,7 @@ inline fun <T> whenever(methodCall: T): OngoingStubbing<T> {
     return `when`(methodCall)!!
 }
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(MockitoJUnitRunner::class)
 class StonksRepositoryTest {
     @Mock
@@ -36,11 +40,14 @@ class StonksRepositoryTest {
     @Mock
     private lateinit var dao: CachedPortfolioDao
 
-    private lateinit var repository :StonksRepository
-
+    private lateinit var repository: StonksRepository
+    
+    @get:Rule
+    val coroutineTestRule = CoroutineTestRule()
+    
     @Before
     fun before() {
-        repository = StonksRepository(mockListApi,mockDetailsApi, dao)
+        repository = StonksRepository(mockListApi, mockDetailsApi, dao)
     }
 
     @Test
@@ -53,8 +60,9 @@ class StonksRepositoryTest {
         val result = repository.loadPortfolio(PortfolioEndpoint.Good)
 
         // Assert.
-        assertTrue(result is ApiResult.Success)
-        assertEquals(successfulResult.value, (result as ApiResult.Success).value)
+        assertTrue(result is ResultWrapper.Success)
+        assertEquals(successfulResult.value, (result as ResultWrapper.Success).data)
+        assertFalse(result.isCachedData)
     }
 
     @Test
@@ -68,9 +76,8 @@ class StonksRepositoryTest {
         val result = repository.loadPortfolio(PortfolioEndpoint.Good)
 
         // Assert.
-        assertTrue(result is ApiResult.Failure)
-        assertEquals(404, (result as ApiResult.Failure.HttpFailure).code)
-        assertEquals(error, result.error)
+        assertTrue(result is ResultWrapper.Error)
+        assertEquals(error, (result as ResultWrapper.Error).error)
     }
 
     @Test
