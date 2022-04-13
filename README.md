@@ -142,10 +142,10 @@ UseCases Covered by Mohit:
 5. Unit Testing: Junit + Mockito 
 6. Concurrency: Rudimentary Coroutines.
 
-Demo Video: https://github.com/mohitb117/Stonks/blob/main/app/artifacts_from_mohit/End-To-End-Stongs.mp4
+Demo Video: https://github.com/mohitb117/Stonks/blob/main/artifacts_from_mohit/End-To-End-Stongs.mp4
 
 | Design/Rough Sketch | Demo |
 | ---- |---- |
-| <img height="500" src="app/artifacts_from_mohit/Rough_sketch.jpg" width="500"/> | ![](https://github.com/mohitb117/Stonks/blob/main/app/artifacts_from_mohit/End-To-End-Stongs.gif) |
+| <img height="500" src="artifacts_from_mohit/Rough_sketch.jpg" width="500"/> | ![](https://github.com/mohitb117/Stonks/blob/main/artifacts_from_mohit/End-To-End-Stongs.gif) |
 
 
