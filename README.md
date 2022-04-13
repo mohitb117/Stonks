@@ -117,12 +117,15 @@ Cash App Stocks Take Home Project 4
  "current_price_timestamp": 1597942385 },
 ...
 ] }
+
 Other Stuff
-Use What You Know
-We’re looking to see you at your best – as such, please use the language and frameworks you’re most comfortable with on your chosen mobile platform. This means that if you’re most proficient with Objective-C or Java, use that – don’t feel pressured to use Swift or Kotlin! Cash App ships all four in production, so we’re not going to prefer answers in one language over another.
-Show Us Your Strengths
-We want to see what you’re best at. Feel free to use 3rd party libraries, but please understand that we want this exercise to be a good representation of your
-coding ability.
+1. Use What You Know
+2. We’re looking to see you at your best – as such, please use the language and frameworks you’re most comfortable with on your chosen mobile platform. 
+3. This means that if you’re most proficient with Objective-C or Java, use that – don’t feel pressured to use Swift or Kotlin! 
+4. Cash App ships all four in production, so we’re not going to prefer answers in one language over another.
+5. Show Us Your Strengths 
+6. We want to see what you’re best at. 
+7. Feel free to use 3rd party libraries, but please understand that we want this exercise to be a good representation of your coding ability.
 
 UseCases Covered by Mohit: 
 1. Load and display Portfolio data (Good/Bad/Malformed URL).
@@ -130,3 +133,11 @@ UseCases Covered by Mohit:
 3. Support a rudimentary form of offline mode. 
 4. Show Portfolio details. 
 5. Some form of sorting portfolio into a grid recyclerview. 
+
+3P Libraries used: 
+1. DI: Hilt
+2. Network Infrastructure: EitherNet + Retrofit + Moshi (Tried malformed parsing but I was unsuccessful to setup correctly 😭)
+3. Portfolio Chart UI: com.github.PhilJay:MPAndroidChart
+4. List UI: RecyclerView
+5. Unit Testing: Junit + Mockito 
+6. Concurrency: Rudimentary Coroutines.
