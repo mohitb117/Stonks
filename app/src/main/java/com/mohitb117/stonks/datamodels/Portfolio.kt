@@ -9,6 +9,8 @@ import kotlinx.parcelize.Parcelize
 import java.text.NumberFormat
 import kotlin.random.Random
 
+const val TABLE_NAME = "stock_table_name"
+
 /**
  * View specific data object to display portfolio.
  */
@@ -25,9 +27,18 @@ data class Portfolio(
         }
     }
 
-    fun portfolioDetails(formatter: NumberFormat): CharSequence {
+    fun portfolioDetails(formatter: NumberFormat, isCached: Boolean = false): CharSequence {
         val portfolioSumFormatted = formatter.format(portfolioSum)
-        return "Portfolio Details: ${stocks.size} Stocks and $portfolioSumFormatted in stocks"
+        val online = "🌎"
+        val cached = "💾"
+
+        val status = if (isCached) cached else online
+
+        return """
+            Portfolio: ${stocks.size} Stocks 
+            Total Value = $portfolioSumFormatted
+            Status: $status
+        """.trimIndent()
     }
 }
 
@@ -76,8 +87,6 @@ data class Stock(
         """.trimIndent()
     }
 }
-
-const val TABLE_NAME = "stock_table_name"
 
 @Parcelize
 data class StockDetails(

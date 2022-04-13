@@ -4,7 +4,7 @@ Project Status
 
 -----
 
-HOW TO BUILD APK for Demo App
+HOW TO BUILD APK for Stonks App
 
 1. Use Android Studio:
    I used Android Studio Config: 
@@ -123,10 +123,10 @@ We’re looking to see you at your best – as such, please use the language and
 Show Us Your Strengths
 We want to see what you’re best at. Feel free to use 3rd party libraries, but please understand that we want this exercise to be a good representation of your
 coding ability.
-  
-	
 
-URLs:
-* https://storage.googleapis.com/cash-homework/cash-stocks-api/portfolio.json
-* https://storage.googleapis.com/cash-homework/cash-stocks-api/portfolio_malformed.json
-* https://storage.googleapis.com/cash-homework/cash-stocks-api/portfolio_empty.json
+UseCases Covered by Mohit: 
+1. Load and display Portfolio data (Good/Bad/Malformed URL).
+2. Allow user to switch between different Portfolio endpoints. 
+3. Support a rudimentary form of offline mode. 
+4. Show Portfolio details. 
+5. Some form of sorting portfolio into a grid recyclerview. 

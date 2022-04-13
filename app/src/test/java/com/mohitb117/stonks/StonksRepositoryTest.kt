@@ -5,6 +5,7 @@ import com.mohitb117.stonks.datamodels.Portfolio
 import com.mohitb117.stonks.datamodels.Stock
 import com.mohitb117.stonks.endpoints.DetailsApi
 import com.mohitb117.stonks.endpoints.ListApi
+import com.mohitb117.stonks.repositories.PortfolioEndpoint
 import com.mohitb117.stonks.repositories.StonksRepository
 import com.slack.eithernet.ApiResult
 import kotlinx.coroutines.runBlocking
@@ -16,13 +17,6 @@ import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.stubbing.OngoingStubbing
-
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
-private const val FAKE_STRING = "HELLO WORLD"
 
 @Suppress("NOTHING_TO_INLINE")
 inline fun <T> whenever(methodCall: T): OngoingStubbing<T> {
@@ -50,7 +44,7 @@ class StonksRepositoryTest {
         val repository = StonksRepository(mockListApi,mockDetailsApi, dao)
 
         // Act.
-        val result = repository.loadPortfolio()
+        val result = repository.loadPortfolio(PortfolioEndpoint.Good)
 
         // Assert.
         assertTrue(result is ApiResult.Success)
@@ -67,7 +61,7 @@ class StonksRepositoryTest {
         val repository = StonksRepository(mockListApi,mockDetailsApi, dao)
 
         // Act.
-        val result = repository.loadPortfolio()
+        val result = repository.loadPortfolio(PortfolioEndpoint.Good)
 
         // Assert.
         assertTrue(result is ApiResult.Failure)

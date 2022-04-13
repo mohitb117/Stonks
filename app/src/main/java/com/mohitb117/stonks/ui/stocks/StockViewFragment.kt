@@ -1,6 +1,8 @@
 package com.mohitb117.stonks.ui.stocks
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,7 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,12 +31,15 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.google.android.material.snackbar.Snackbar
 import com.mohitb117.stonks.R
-import com.mohitb117.stonks.activities.LaunchingActivity
+import com.mohitb117.stonks.activities.LaunchActivityViewModel
 import com.mohitb117.stonks.common.ResultWrapper
+import com.mohitb117.stonks.common.isNetworkAvailable
 import com.mohitb117.stonks.databinding.FragmentStockViewBinding
 import com.mohitb117.stonks.datamodels.Portfolio
 import com.mohitb117.stonks.datamodels.Stock
+import com.mohitb117.stonks.repositories.PortfolioEndpoint
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
 import java.util.concurrent.TimeUnit
@@ -47,6 +54,8 @@ class StockViewFragment : Fragment(), Callbacks, SwipeRefreshLayout.OnRefreshLis
     private lateinit var viewBinding: FragmentStockViewBinding
 
     private val viewModel: StonksViewModel by viewModels()
+
+    private val activityViewModel: LaunchActivityViewModel by activityViewModels()
 
     private val stockListAdapter = StockListAdapter(this)
 
@@ -94,14 +103,7 @@ class StockViewFragment : Fragment(), Callbacks, SwipeRefreshLayout.OnRefreshLis
             )
         }
 
-        // FIXME: UGLY and use uni-directional events to communicate between fragment and parent activity.
-        (requireActivity() as LaunchingActivity).gotoDetails(stock)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        lifecycleScope.launchWhenResumed { viewModel.loadStocks() }
+        activityViewModel.onStockSelected(stock)
     }
 
     override fun onCreateView(
@@ -119,7 +121,21 @@ class StockViewFragment : Fragment(), Callbacks, SwipeRefreshLayout.OnRefreshLis
         return viewBinding.root
     }
 
-    private fun initAdapter(list: RecyclerView) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Retrieve and show cached portfolio.
+        viewModel
+            .portfolio
+            .observe(viewLifecycleOwner) { resultListener(it) }
+
+        // On new Setting selected
+        activityViewModel
+            .portfolioEndpoint
+            .observe(viewLifecycleOwner) { onRefreshInternal(it) }
+    }
+
+   private fun initAdapter(list: RecyclerView) {
         list.apply {
             layoutManager = GridLayoutManager(requireContext(), 2, RecyclerView.HORIZONTAL, false)
             adapter = stockListAdapter
@@ -196,20 +212,6 @@ class StockViewFragment : Fragment(), Callbacks, SwipeRefreshLayout.OnRefreshLis
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        // Retrieve and show cached portfolio.
-        viewModel
-            .portfolio
-            .observe(viewLifecycleOwner) { resultListener(it) }
-
-        // Show cached portfolio.
-        viewModel
-            .getCachedPortfolio()
-            .observe(viewLifecycleOwner) { resultListener(it) }
-    }
-
     @Suppress("DEPRECATION")
     private fun updateForStockData(portfolioResult: ResultWrapper<Portfolio>?) {
         if (portfolioResult == null) return
@@ -222,14 +224,18 @@ class StockViewFragment : Fragment(), Callbacks, SwipeRefreshLayout.OnRefreshLis
 
                 Log.v(TAG, "StockCount = ${stocks.size} and \n $stocks")
 
-                if (stocks.isEmpty()) return
+                if (stocks.isEmpty()) {
+                    viewBinding.emptyView.isVisible = true
+                    viewBinding.emptyView.text = resources.getString(R.string.empty_portfolio_result_for_reason, "The backend had no portfolio data for you 😭🗑📭")
+                    return
+                }
 
                 setDataToLineChart(stocks)
                 stockListAdapter.submitList(stocks)
 
                 val current = resources.configuration.locale
                 val formatter = NumberFormat.getCurrencyInstance(current)
-                viewBinding.portfolioDetails.text = data.portfolioDetails(formatter)
+                viewBinding.portfolioDetails.text = data.portfolioDetails(formatter, portfolioResult.isCachedData)
             }
             else -> Unit
         }
@@ -241,6 +247,7 @@ class StockViewFragment : Fragment(), Callbacks, SwipeRefreshLayout.OnRefreshLis
                 viewBinding.apply {
                     loading.isVisible = true
                     swipeRefreshLayout.isRefreshing = true
+                    emptyView.isVisible = false
                 }
             }
 
@@ -276,7 +283,33 @@ class StockViewFragment : Fragment(), Callbacks, SwipeRefreshLayout.OnRefreshLis
     }
 
     override fun onRefresh() {
-       lifecycleScope.launch { viewModel.loadStocks() }
+        val default = activityViewModel.portfolioEndpoint.value ?: PortfolioEndpoint.Good
+        onRefreshInternal(default)
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun onRefreshInternal(endpoint: PortfolioEndpoint) {
+        val isNetworkAvailable = { requireContext().isNetworkAvailable() }
+
+        val offlineObserver =
+            Observer<ResultWrapper<Portfolio>> { if (!isNetworkAvailable()) resultListener(it) }
+
+        if (isNetworkAvailable()) {
+            lifecycleScope.launch { viewModel.loadStocks(endpoint) }
+            viewModel.getCachedPortfolio().removeObserver(offlineObserver)
+        } else {
+            viewBinding.portfolioDetails.apply {
+                isVisible = true
+                text = "Sorry!!! No internet available... fetching cached data 💾"
+            }
+
+            lifecycleScope.launch {
+                delay(1000)
+                viewModel
+                    .getCachedPortfolio()
+                    .observe(viewLifecycleOwner, offlineObserver)
+            }
+        }
     }
 
     private companion object {

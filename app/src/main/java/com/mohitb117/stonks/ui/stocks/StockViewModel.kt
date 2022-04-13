@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.mohitb117.stonks.datamodels.Portfolio
 import com.mohitb117.stonks.common.ResultWrapper
+import com.mohitb117.stonks.repositories.PortfolioEndpoint
 import com.mohitb117.stonks.repositories.StonksRepository
 import com.slack.eithernet.ApiResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,25 +33,31 @@ class StonksViewModel
         _portfolio.postValue(ResultWrapper.Error(throwable))
     }
 
-    fun loadStocks() {
+    fun loadStocks(portfolioEndpoint: PortfolioEndpoint) {
         _portfolio.postValue(ResultWrapper.Loading())
 
         job = viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
+            val apiResponse = repository.loadPortfolio(portfolioEndpoint)
 
-            val result = when (val result = repository.loadPortfolio()) {
+            Log.v(TAG, "Error: $apiResponse")
+
+            val result = when (apiResponse) {
                 is ApiResult.Success -> {
-                    val portfolio = Portfolio(result.value.stocks)
+                    val portfolio = Portfolio(apiResponse.value.stocks)
 
                     repository.insertAll(portfolio)
 
                     ResultWrapper.Success(portfolio)
                 }
+                is ApiResult.Failure -> when (apiResponse) {
+                    is ApiResult.Failure.ApiFailure -> ResultWrapper.Error(apiResponse.error)
+                    is ApiResult.Failure.HttpFailure -> ResultWrapper.Error(apiResponse.error)
+                    is ApiResult.Failure.NetworkFailure -> {
+                        Log.e(TAG, "Error: ${apiResponse.error}", apiResponse.error)
+                        ResultWrapper.Error(apiResponse.error)
+                    }
 
-                is ApiResult.Failure -> when (result) {
-                    is ApiResult.Failure.ApiFailure -> ResultWrapper.Error(result.error)
-                    is ApiResult.Failure.HttpFailure -> ResultWrapper.Error(result.error)
-                    is ApiResult.Failure.NetworkFailure -> ResultWrapper.Error(result.error)
-                    is ApiResult.Failure.UnknownFailure -> ResultWrapper.Error(result.error)
+                    is ApiResult.Failure.UnknownFailure -> ResultWrapper.Error(apiResponse.error)
                     else -> ResultWrapper.Error("Not sure what is going on!!! 🙈🥺 ")
                 }
             }
