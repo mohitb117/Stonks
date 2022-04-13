@@ -20,8 +20,10 @@ import org.junit.Rule
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
+import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.stubbing.OngoingStubbing
+import org.robolectric.RobolectricTestRunner
 
 @Suppress("NOTHING_TO_INLINE")
 inline fun <T> whenever(methodCall: T): OngoingStubbing<T> {
@@ -29,7 +31,7 @@ inline fun <T> whenever(methodCall: T): OngoingStubbing<T> {
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-@RunWith(MockitoJUnitRunner::class)
+@RunWith(RobolectricTestRunner::class)
 class StonksRepositoryTest {
     @Mock
     private lateinit var mockListApi: ListApi
@@ -47,6 +49,7 @@ class StonksRepositoryTest {
     
     @Before
     fun before() {
+        MockitoAnnotations.openMocks(this)
         repository = StonksRepository(mockListApi, mockDetailsApi, dao)
     }
 

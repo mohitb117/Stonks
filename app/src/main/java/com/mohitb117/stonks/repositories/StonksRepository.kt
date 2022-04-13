@@ -57,11 +57,7 @@ class StonksRepository
             is ApiResult.Failure -> when (apiResponse) {
                 is ApiResult.Failure.ApiFailure -> ResultWrapper.Error(apiResponse.error)
                 is ApiResult.Failure.HttpFailure -> ResultWrapper.Error(apiResponse.error)
-                is ApiResult.Failure.NetworkFailure -> {
-                    Log.e(TAG, "Error: ${apiResponse.error}", apiResponse.error)
-                    ResultWrapper.Error(apiResponse.error)
-                }
-
+                is ApiResult.Failure.NetworkFailure -> ResultWrapper.Error(apiResponse.error)
                 is ApiResult.Failure.UnknownFailure -> ResultWrapper.Error(apiResponse.error)
                 else -> ResultWrapper.Error("Not sure what is going on!!! 🙈🥺 ")
             }
