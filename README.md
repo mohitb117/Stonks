@@ -141,3 +141,7 @@ UseCases Covered by Mohit:
 4. List UI: RecyclerView
 5. Unit Testing: Junit + Mockito 
 6. Concurrency: Rudimentary Coroutines.
+
+Demo Video: https://github.com/mohitb117/Stonks/blob/main/app/artifacts_from_mohit/End-To-End-Stongs.mp4 
+   
+   
