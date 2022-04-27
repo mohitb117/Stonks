@@ -4,12 +4,13 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/bottomsheet_rounded.xml" value="0.211" />
+        <entry key="app/src/main/res/drawable/ic_square_24.xml" value="0.343" />
         <entry key="app/src/main/res/layout/activity_launching.xml" value="0.375" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.5194444444444445" />
         <entry key="app/src/main/res/layout/fragment_details.xml" value="0.45" />
         <entry key="app/src/main/res/layout/fragment_favourites.xml" value="0.2630208333333333" />
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.16111111111111112" />
-        <entry key="app/src/main/res/layout/fragment_stock_view.xml" value="0.35555555555555557" />
+        <entry key="app/src/main/res/layout/fragment_stock_view.xml" value="0.3212325875897003" />
         <entry key="app/src/main/res/layout/item_movie_list_preview.xml" value="0.4764102564102564" />
         <entry key="app/src/main/res/layout/item_stonk.xml" value="0.45" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.1675925925925926" />

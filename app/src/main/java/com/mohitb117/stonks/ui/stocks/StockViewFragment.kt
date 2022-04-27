@@ -8,6 +8,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -29,6 +40,7 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import com.google.android.material.composethemeadapter.MdcTheme
 import com.google.android.material.snackbar.Snackbar
 import com.mohitb117.stonks.R
 import com.mohitb117.stonks.activities.LaunchActivityViewModel
@@ -118,7 +130,35 @@ class StockViewFragment : Fragment(), Callbacks, SwipeRefreshLayout.OnRefreshLis
 
         viewBinding.swipeRefreshLayout.setOnRefreshListener(this)
 
+        val greeting = viewBinding.greeting
+
+        greeting.setContent {
+            MdcTheme { // or AppCompatTheme
+                Greeting(stringResource(R.string.greeting))
+            }
+        }
+
         return viewBinding.root
+    }
+
+    @Composable
+    private fun Greeting(text: String) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.h5,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = dimensionResource(R.dimen.margin_small))
+                .wrapContentWidth(Alignment.CenterHorizontally)
+        )
+    }
+
+    @Preview
+    @Composable
+    fun DummyPreview() {
+        MdcTheme {
+            Greeting(text = "Hello World!!!")
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

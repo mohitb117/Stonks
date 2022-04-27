@@ -10,4 +10,5 @@
     <string name="empty_portfolio_result_for_reason">No Stocks Found!! for reason %s</string>
     <string name="empty_portfolio_result_for_ticker_reason">No Stocks Found for ticker %s (reason %s)</string>
     <string name="empty_portfolio_result_for_no_reason">No Stocks Data Found!!</string>
+    <string name="greeting">\"Yee haw!!\"</string>
 </resources>
